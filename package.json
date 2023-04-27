@@ -1,0 +1,25 @@
+{
+  "name": "expressnodejs",
+  "version": "1.0.0",
+  "description": "API usando Express",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/manimanitin/ExpressNodeJS.git"
+  },
+  "keywords": [
+    "API"
+  ],
+  "author": "Manuel Andre Gutierrez Davila",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/manimanitin/ExpressNodeJS/issues"
+  },
+  "homepage": "https://github.com/manimanitin/ExpressNodeJS#readme",
+  "dependencies": {
+    "express": "^4.18.2"
+  }
+}
