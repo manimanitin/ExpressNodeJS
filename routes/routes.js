@@ -5,7 +5,7 @@ const router = (app) => {
     //Users routes
     app.get('/', (request, response) => {
         response.send({
-            message: 'Bienvenido a Node.js Express REST API'
+            message: 'Bienvenido a Node.js Express REST API Manuel Andre Gutierrez Davila'
         });
     });
     app.get('/users', (request, response) => {
