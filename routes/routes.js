@@ -1,4 +1,5 @@
 const pool = require('../data/config');
+const mssql = require('mssql');
 
 const router = (app) => {
     app.get('/', (request, response) => {
@@ -11,95 +12,142 @@ const router = (app) => {
     //Users routes
 
     app.get('/users', async (request, response) => {
-        const db = await pool;
-        const results = await db.request().query('SELECT * FROM users ', (error, result) => {
-            if (error) throw error;
-            const resultar = result.recordsets.reduce((obj, item) => obj[item.id] = item.nombre, obj, {});
-            
-            response.send(resultar);
-        });
+        try {
+            const db = await pool;
+            const results = await db.request().query('SELECT * FROM users ');
+            response.send(results.recordsets.flat());
+        } catch (error) {
+            console.log(error);
+        }
+
     });
 
     app.get('/users/:id', async (request, response) => {
-        const db = await pool;
-        const id = request.params.id;
-        const results = await db.request().query('SELECT * FROM users WHERE id = ?', id, (error, result) => {
-            if (error) throw error;
-            response.send(result.recordsets);
-        });
+        try {
+            const db = await pool;
+            const id = request.params.id;
+            const results = await db.request()
+                .input('id', mssql.VarChar, id)
+                .query('SELECT * FROM users WHERE id = @id');
+            response.send(results.recordsets.flat());
+        } catch (error) {
+            console.log(error);
+        }
+
     });
 
     app.post('/users', async (request, response) => {
-        const db = await pool;
-        const results = await db.request().query('INSERT INTO users SET ?', request.body, (error, result) => {
-            if (error) throw error;
-            response.status(201).send(`User added with id ${result.insertId}`);
-        });
+        try {
+            const db = await pool;
+            const results = await db.request()
+                .input('nombre', mssql.VarChar, request.body.nombre)
+                .query('INSERT INTO users OUTPUT INSERTED.id VALUES(@nombre) ');
+            response.status(201).send(`User added with id ${results.recordset.flat()[0].id}`);
+        } catch (error) {
+            console.log(error);
+        }
+
     });
 
     app.put('/users/:id', async (request, response) => {
-        const db = await pool;
-        const id = request.params.id;
-        const results = await db.request().query('UPDATE users SET ? WHERE id = ?', [request.body, id], (error, result) => {
-            if (error) throw error;
+        try {
+            const db = await pool;
+            const id = request.params.id;
+            const results = await db.request()
+                .input('nombre', mssql.VarChar, request.body.nombre)
+                .input('id', mssql.VarChar, id)
+                .query('UPDATE users SET nombre = @nombre WHERE id = @id');
             response.send('User updated successfully');
-        });
+        } catch (error) {
+            console.log(error);
+        }
     });
 
     app.delete('/users/:id', async (request, response) => {
-        const db = await pool;
-        const id = request.params.id;
-        const results = await db.request().query('DELETE FROM users WHERE id = ?', id, (error, result) => {
-            if (error) throw error;
+        try {
+            const db = await pool;
+            const id = request.params.id;
+            const results = await db.request()
+                .input('id', mssql.VarChar, id)
+                .query('DELETE FROM users WHERE id = @id');
             response.send('User deleted');
-        });
+        } catch (error) {
+            console.log(error);
+        }
+
+     
     });
 
     //Product routes
 
 
     app.get('/products', async (request, response) => {
-        const db = await pool;
-        const results = await db.request().query('SELECT * FROM products', (error, result) => {
-            if (error) throw error;
-            response.send(result.recordsets);
-        });
+        try {
+            const db = await pool;
+            const results = await db.request().query('SELECT * FROM products ');
+            response.send(results.recordsets.flat());
+        } catch (error) {
+            console.log(error);
+        }
+
     });
 
     app.get('/products/:id', async (request, response) => {
-        const db = await pool;
-        const id = request.params.id;
-        const results = await db.request().query('SELECT * FROM products WHERE id = ?', id, (error, result) => {
-            if (error) throw error;
-            response.send(result.recordsets);
-        });
+        try {
+            const db = await pool;
+            const id = request.params.id;
+            const results = await db.request()
+                .input('id', mssql.VarChar, id)
+                .query('SELECT * FROM products WHERE id = @id');
+            response.send(results.recordsets.flat());
+        } catch (error) {
+            console.log(error);
+        }
+
     });
 
     app.post('/products', async (request, response) => {
-        const db = await pool;
-        const results = await db.request().query('INSERT INTO products SET ?', request.body, (error, result) => {
-            if (error) throw error;
-            response.status(201).send(`User added with id ${result.insertId}`);
-        });
+        try {
+            const db = await pool;
+            const results = await db.request()
+                .input('nombre', mssql.VarChar, request.body.nombre)
+                .query('INSERT INTO products OUTPUT INSERTED.id VALUES(@nombre) ');
+            response.status(201).send(`User added with id ${results.recordset.flat()[0].id}`);
+        } catch (error) {
+            console.log(error);
+        }
+
     });
 
     app.put('/products/:id', async (request, response) => {
-        const db = await pool;
-        const id = request.params.id;
-        const results = await db.request().query('UPDATE products SET ? WHERE id = ?', [request.body, id], (error, result) => {
-            if (error) throw error;
+        try {
+            const db = await pool;
+            const id = request.params.id;
+            const results = await db.request()
+                .input('nombre', mssql.VarChar, request.body.nombre)
+                .input('id', mssql.VarChar, id)
+                .query('UPDATE products SET nombre = @nombre WHERE id = @id');
             response.send('User updated successfully');
-        });
+        } catch (error) {
+            console.log(error);
+        }
     });
 
     app.delete('/products/:id', async (request, response) => {
-        const db = await pool;
-        const id = request.params.id;
-        const results = await db.request().query('DELETE FROM products WHERE id = ?', id, (error, result) => {
-            if (error) throw error;
+        try {
+            const db = await pool;
+            const id = request.params.id;
+            const results = await db.request()
+                .input('id', mssql.VarChar, id)
+                .query('DELETE FROM products WHERE id = @id');
             response.send('User deleted');
-        });
+        } catch (error) {
+            console.log(error);
+        }
+
+     
     });
+
 };
 
 module.exports = router;
