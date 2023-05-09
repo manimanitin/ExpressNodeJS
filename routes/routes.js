@@ -40,7 +40,7 @@ const router = (app) => {
 
     app.delete('/users/:id', (request, response) => {
         const id = request.params.id;
-        pool.query('DELETE users WHERE id = ?', id, (error, result) => {
+        pool.query('DELETE FROM users WHERE id = ?', id, (error, result) => {
             if (error) throw error;
             response.send('User deleted');
         });
@@ -81,7 +81,7 @@ const router = (app) => {
 
     app.delete('/products/:id', (request, response) => {
         const id = request.params.id;
-        pool.query('DELETE products WHERE id = ?', id, (error, result) => {
+        pool.query('DELETE FROM products WHERE id = ?', id, (error, result) => {
             if (error) throw error;
             response.send('User deleted');
         });
