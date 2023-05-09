@@ -3,7 +3,7 @@ const pool = require('../data/config');
 const router = (app) => {
     app.get('/', (request, response) => {
         response.send({
-            message: 'Bienvenido a Node.js Express REST API'
+            message: 'Bienvenido a Node.js Express REST API Manuel Andre Gutierrez Davila'
         });
     });
 
@@ -14,8 +14,9 @@ const router = (app) => {
         const db = await pool;
         const results = await db.request().query('SELECT * FROM users ', (error, result) => {
             if (error) throw error;
-            const resultar = result.recordsets.map(resultado => ({ [resultado.key]: resultado.value }));
-            response.send(resultar.recordsets);
+            const resultar = result.recordsets.reduce((obj, item) => obj[item.id] = item.nombre, obj, {});
+            
+            response.send(resultar);
         });
     });
 
