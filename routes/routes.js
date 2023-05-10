@@ -27,7 +27,7 @@ const router = (app) => {
             const db = await pool;
             const id = request.params.id;
             const results = await db.request()
-                .input('id', mssql.VarChar, id)
+                .input('id', mssql.Int, id)
                 .query('SELECT * FROM users WHERE id = @id');
             response.send(results.recordsets.flat());
         } catch (error) {
@@ -55,7 +55,7 @@ const router = (app) => {
             const id = request.params.id;
             const results = await db.request()
                 .input('nombre', mssql.VarChar, request.body.nombre)
-                .input('id', mssql.VarChar, id)
+                .input('id', mssql.Int, id)
                 .query('UPDATE users SET nombre = @nombre WHERE id = @id');
             response.send('User updated successfully');
         } catch (error) {
@@ -68,7 +68,7 @@ const router = (app) => {
             const db = await pool;
             const id = request.params.id;
             const results = await db.request()
-                .input('id', mssql.VarChar, id)
+                .input('id', mssql.Int, id)
                 .query('DELETE FROM users WHERE id = @id');
             response.send('User deleted');
         } catch (error) {
@@ -97,7 +97,7 @@ const router = (app) => {
             const db = await pool;
             const id = request.params.id;
             const results = await db.request()
-                .input('id', mssql.VarChar, id)
+                .input('id', mssql.Int, id)
                 .query('SELECT * FROM products WHERE id = @id');
             response.send(results.recordsets.flat());
         } catch (error) {
@@ -125,7 +125,7 @@ const router = (app) => {
             const id = request.params.id;
             const results = await db.request()
                 .input('nombre', mssql.VarChar, request.body.nombre)
-                .input('id', mssql.VarChar, id)
+                .input('id', mssql.Int, id)
                 .query('UPDATE products SET nombre = @nombre WHERE id = @id');
             response.send('User updated successfully');
         } catch (error) {
@@ -138,7 +138,7 @@ const router = (app) => {
             const db = await pool;
             const id = request.params.id;
             const results = await db.request()
-                .input('id', mssql.VarChar, id)
+                .input('id', mssql.Int, id)
                 .query('DELETE FROM products WHERE id = @id');
             response.send('User deleted');
         } catch (error) {
